@@ -236,54 +236,66 @@ private: System::Void Ingresar_Click(System::Object^ sender, System::EventArgs^ 
     int x = 34;
     int y = 162;
     int ControlExponente = Exponente;
-    while (Numero <= Exponente) {
-        //Creamos objetos
-        TextBox^ Coeficientes = gcnew TextBox();
-        Label^ literal = gcnew Label();
+
+    try
+    {
+        while (Numero <= Exponente) {
+            //Creamos objetos
+            TextBox^ Coeficientes = gcnew TextBox();
+            Label^ literal = gcnew Label();
 
 
-        Coeficientes->Location = System::Drawing::Point(x, y);
-        Coeficientes->Name = "Coeficiente"+Numero;
-        Coeficientes->Size = System::Drawing::Size(60, 20);
-        Coeficientes->TabIndex = Numero;
+            Coeficientes->Location = System::Drawing::Point(x, y);
+            Coeficientes->Name = "Coeficiente" + Numero;
+            Coeficientes->Size = System::Drawing::Size(60, 20);
+            Coeficientes->TabIndex = Numero;
 
-        literal->AutoSize = true;
-        literal->Location = System::Drawing::Point(x, y - 15);
-        literal->Name = L"label1";
-        literal->Size = System::Drawing::Size(208, 13);
+            literal->AutoSize = true;
+            literal->Location = System::Drawing::Point(x, y - 15);
+            literal->Name = L"label1";
+            literal->Size = System::Drawing::Size(208, 13);
 
-        //Condicion para los literales
-        if (ControlExponente == 0) {
-            literal->Text = L"Termino Independiente";
-        }
-        else {
-            literal->Text = L"X^" + ControlExponente;
-        };
+            //Condicion para los literales
+            if (ControlExponente == 0) {
+                literal->Text = L"Termino Independiente";
+            }
+            else {
+                literal->Text = L"X^" + ControlExponente;
+            };
 
 
-        //añadir los objetos creados 
-        this->Controls->Add(Coeficientes);
-        this->Controls->Add(literal);
-        //Control de contadores
-        Numero = Numero + 1;
-        x = x + 80;
-        ControlExponente = ControlExponente - 1;
-    }//final del while
+            //añadir los objetos creados 
+            this->Controls->Add(Coeficientes);
+            this->Controls->Add(literal);
+            //Control de contadores
+            Numero = Numero + 1;
+            x = x + 80;
+            ControlExponente = ControlExponente - 1;
+        }//final del while
+    }
+    catch (Exception^ ex)
+    {
+        MessageBox::Show("Se produjo un error: " + ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+    }
+    
 
 } // final del evento para generar los botones
 
 //Evento para hacer el metodo
 
-double CalcularFxi(Double Xi, Double exponente, array<Double>^ ValorCoeficientes) {
+Double CalcularFxi(Double Xi, Double exponente, array<Double>^ ValorCoeficientes) {
     Double Fxi = 0.0;
+    Double Coeficiente = 0.0;
     int contador = ValorCoeficientes->Length;
     int Expo = exponente;
     Double FXI = 0.0;
     
     for (int b = 0; b < contador;b++) {
-        if (Expo > 0)
-        {
-            Fxi = (ValorCoeficientes[b] * pow(Xi, Expo));
+        if (Expo > 0) 
+        {   
+            Coeficiente = pow(Xi,Expo);
+            Fxi = (ValorCoeficientes[b] * Coeficiente);
+
         }
         else
         {
@@ -294,10 +306,11 @@ double CalcularFxi(Double Xi, Double exponente, array<Double>^ ValorCoeficientes
         FXI = FXI + (Fxi);
 
     }
+    FXI = Math::Round(FXI, 6, MidpointRounding::AwayFromZero);
     return FXI;
 }// fin de funcion 
 
-double CalcularFxu(Double Xu, Double exponente, array<Double>^ ValorCoeficientes) {
+Double CalcularFxu(Double Xu, Double exponente, array<Double>^ ValorCoeficientes) {
     Double Fxu = 0.0;
     int contador = ValorCoeficientes->Length;
     int Expo = exponente;
@@ -317,15 +330,48 @@ double CalcularFxu(Double Xu, Double exponente, array<Double>^ ValorCoeficientes
         FXU = FXU + (Fxu);
 
     }
+    FXU = Math::Round(FXU, 6, MidpointRounding::AwayFromZero);
     return FXU;
 };
 
-double CalcularXr(Double Xi, Double Xu) {
+Double CalcularXr(Double Xi, Double Xu) {
     Double XR = 0.0;
 
     XR = (Xi + Xu) / 2;
     return XR;
 };
+
+Double CalcularFxr(Double Xr, Double exponente, array<Double>^ ValorCoeficientes) {
+    Double Fxr = 0.0;
+    int contador = ValorCoeficientes->Length;
+    int Expo = exponente;
+    Double FXR = 0.0;
+
+    for (int b = 0; b < contador; b++) {
+        if (Expo > 0)
+        {
+            Fxr = (ValorCoeficientes[b] * pow(Xr, Expo));
+        }
+        else
+        {
+            Fxr = (ValorCoeficientes[b]);
+        }
+        Expo = Expo - 1;
+        //hacmeos la sumatoria final de FXI y FXU
+        FXR = FXR + (Fxr);
+
+    }
+    FXR = Math::Round(FXR, 6, MidpointRounding::AwayFromZero);
+
+    return FXR;
+}//Fin de Calcular F(xr)
+
+Double Errores(Double XrActual, Double XrAnterior) {
+    Double Error = fabs((XrActual - XrAnterior) * 100);
+    Error = Math::Round(Error, 6, MidpointRounding::AwayFromZero);
+    return Error;
+};//Fin de Calcular errores
+    
     
 
 // Evento de calculo de Biseccion -------------------------------------------------------------------
@@ -335,60 +381,102 @@ private: System::Void Calcular_Click(System::Object^ sender, System::EventArgs^ 
     Double XU = Convert::ToDouble(xu->Text);
     Double Tolerancia = Convert::ToDouble(tol->Text);
     Double Exponente = Convert::ToDouble(exponente->Text);
+    Double Error = 0.0;
     int a = 0;
     int b = 0;
     int rowCount = DatosTabla->RowCount;
+    int iteracion = 1;
+    double XRA = 0.0;
+    int fila = 0;
 
     array<Double>^ ValorCoeficientes = gcnew array<Double>(Exponente + 1);
-    //while para obtener datos
-    while (a <= Exponente)
-    {   
-        TextBox^ DatoCoeficientes = (TextBox^)Controls->Find("Coeficiente" +a, true)[0];
-        Double Datos = Convert::ToDouble(DatoCoeficientes->Text);
-        ValorCoeficientes[a] = Datos;
-        a = a + 1;
-    };//Fin del while para obtener datos
 
-    //Creamos tabla
-    DatosTabla->ColumnCount = 8;
+    try
+    {
+        //while para obtener datos
+        while (a <= Exponente)
+        {
+            TextBox^ DatoCoeficientes = (TextBox^)Controls->Find("Coeficiente" + a, true)[0];
+            Double Datos = Convert::ToDouble(DatoCoeficientes->Text);
+            ValorCoeficientes[a] = Datos;
+            a = a + 1;
+        };//Fin del while para obtener datos
 
-    DatosTabla->Columns[0]->Name = "Interacciones";
-    DatosTabla->Columns[1]->Name = "XI";
-    DatosTabla->Columns[2]->Name = "XU";
-    DatosTabla->Columns[3]->Name = "XR";
-    DatosTabla->Columns[4]->Name = "F(XI)";
-    DatosTabla->Columns[5]->Name = "F(XU)";
-    DatosTabla->Columns[6]->Name = "F(XR)";
-    DatosTabla->Columns[7]->Name = "ERROR";
-    //Metodo de biseccion 
-    do {
-     //---------------------------------------------------------------------------------------------------
-        DatosTabla->Rows[0]->Cells[1]->Value = XI;
-        DatosTabla->Rows[0]->Cells[2]->Value = XU;
+        //Creamos tabla
+        DatosTabla->ColumnCount = 8;
+
+        DatosTabla->Columns[0]->Name = "Interacciones";
+        DatosTabla->Columns[1]->Name = "XI";
+        DatosTabla->Columns[2]->Name = "XU";
+        DatosTabla->Columns[3]->Name = "XR";
+        DatosTabla->Columns[4]->Name = "F(XI)";
+        DatosTabla->Columns[5]->Name = "F(XU)";
+        DatosTabla->Columns[6]->Name = "F(XR)";
+        DatosTabla->Columns[7]->Name = "ERROR";
+        //Metodo de biseccion 
+
+        do {
+            //---------------------------------------------------------------------------------------------------
+            DatosTabla->Rows->Add();
+            DatosTabla->Rows[fila]->Cells[0]->Value = iteracion;
+            DatosTabla->Rows[fila]->Cells[1]->Value = XI;
+            DatosTabla->Rows[fila]->Cells[2]->Value = XU;
+            //Funcion que calcula F(xi)
+            Double FXI = CalcularFxi(XI, Exponente, ValorCoeficientes);
+            DatosTabla->Rows[fila]->Cells[4]->Value = FXI;
+            //Funcoin que calcula F(xu)
+            Double FXU = CalcularFxu(XU, Exponente, ValorCoeficientes);
+            DatosTabla->Rows[fila]->Cells[5]->Value = FXU;
+            // Calculamos Xr
+            Double XR = CalcularXr(XI, XU);
+            DatosTabla->Rows[fila]->Cells[3]->Value = XR;
+            //Calculamos Fxr
+            Double FXR = CalcularFxr(XR, Exponente, ValorCoeficientes);
+            DatosTabla->Rows[fila]->Cells[6]->Value = FXR;
+            //calcular el error
+
+            if (iteracion > 1) {
+                Error = Errores(XR, XRA);
+            }
+            else
+            {
+                Error = Errores(XR, XU);
+            };
 
 
-        //Funcion que calcula F(xi)
-        Double FXI = CalcularFxi(XI, Exponente, ValorCoeficientes);
-        DatosTabla->Rows[0]->Cells[4]->Value = FXI;
-        //Funcoin que calcula F(xu)
-        Double FXU= CalcularFxu(XU,Exponente,ValorCoeficientes);
-        DatosTabla->Rows[0]->Cells[5]->Value = FXU;
-        Double XR = CalcularXr(XI,XU);
-        DatosTabla->Rows[0]->Cells[3]->Value = XR;
+            if (FXI * FXR > 0) {
+                XI = XR;
+                DatosTabla->Rows[fila]->Cells[7]->Value = Error + "%";
+            }
+            else
+            {
+                if (FXI * FXR == 0)
+                {
+                    Error = Tolerancia;
+                    DatosTabla->Rows[fila]->Cells[7]->Value = "Raiz";
+                }
+                else
+                {
+                    XU = XR;
+                    DatosTabla->Rows[fila]->Cells[7]->Value = Error + "%";
+                }
+
+            }
+            //Guardamos el valor de XR para que sea el anterior
+            XRA = XR;
 
 
 
-
-
-
-
-
-
-
-
-        DatosTabla->Rows->Add();
-        b = b + 1;
-    } while (b < Tolerancia);
+            b = b + 1;
+            iteracion = iteracion + 1;
+            fila = fila + 1;
+        } while (Error > Tolerancia);
+    }
+    catch (Exception^ ex)
+    {
+        MessageBox::Show("Se produjo un error: " + ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+    }
+    
 
 }// fin del evento
 
