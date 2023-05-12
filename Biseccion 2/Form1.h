@@ -22,6 +22,8 @@ namespace CppCLRWinFormsProject {
   /// </summary>
   public ref class Form1 : public System::Windows::Forms::Form
   {
+  private:
+      Bitmap^ fondo = gcnew Bitmap("Fondo.jpg");
   public:
     Form1(void)
     {
@@ -67,6 +69,15 @@ namespace CppCLRWinFormsProject {
   private: System::Windows::Forms::Button^ Calcular;
   private: System::Windows::Forms::DataGridView^ DatosTabla;
   private: System::Windows::Forms::Button^ Limpiar;
+  private: System::Windows::Forms::Timer^ timer1;
+  private: System::Windows::Forms::Label^ ingreso;
+
+
+
+  private: System::Windows::Forms::Label^ Biseccion;
+
+
+  private: System::ComponentModel::IContainer^ components;
 
 
 
@@ -78,7 +89,7 @@ namespace CppCLRWinFormsProject {
     /// <summary>
     /// Required designer variable.
     /// </summary>
-    System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
     /// <summary>
@@ -87,6 +98,7 @@ namespace CppCLRWinFormsProject {
     /// </summary>
     void InitializeComponent(void)
     {
+        this->components = (gcnew System::ComponentModel::Container());
         this->exponente = (gcnew System::Windows::Forms::TextBox());
         this->xi = (gcnew System::Windows::Forms::TextBox());
         this->xu = (gcnew System::Windows::Forms::TextBox());
@@ -99,109 +111,134 @@ namespace CppCLRWinFormsProject {
         this->Calcular = (gcnew System::Windows::Forms::Button());
         this->DatosTabla = (gcnew System::Windows::Forms::DataGridView());
         this->Limpiar = (gcnew System::Windows::Forms::Button());
+        this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+        this->ingreso = (gcnew System::Windows::Forms::Label());
+        this->Biseccion = (gcnew System::Windows::Forms::Label());
         (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->DatosTabla))->BeginInit();
         this->SuspendLayout();
         // 
         // exponente
         // 
-        this->exponente->Location = System::Drawing::Point(16, 81);
+        this->exponente->Location = System::Drawing::Point(46, 109);
         this->exponente->Margin = System::Windows::Forms::Padding(4);
         this->exponente->Name = L"exponente";
-        this->exponente->Size = System::Drawing::Size(132, 22);
+        this->exponente->Size = System::Drawing::Size(187, 22);
         this->exponente->TabIndex = 1;
         // 
         // xi
         // 
-        this->xi->Location = System::Drawing::Point(199, 81);
+        this->xi->Location = System::Drawing::Point(316, 109);
         this->xi->Margin = System::Windows::Forms::Padding(4);
         this->xi->Name = L"xi";
-        this->xi->Size = System::Drawing::Size(132, 22);
+        this->xi->Size = System::Drawing::Size(145, 22);
         this->xi->TabIndex = 2;
         // 
         // xu
         // 
-        this->xu->Location = System::Drawing::Point(371, 81);
+        this->xu->Location = System::Drawing::Point(569, 109);
         this->xu->Margin = System::Windows::Forms::Padding(4);
         this->xu->Name = L"xu";
-        this->xu->Size = System::Drawing::Size(132, 22);
+        this->xu->Size = System::Drawing::Size(161, 22);
         this->xu->TabIndex = 3;
         // 
         // tol
         // 
-        this->tol->Location = System::Drawing::Point(540, 81);
+        this->tol->Location = System::Drawing::Point(806, 109);
         this->tol->Margin = System::Windows::Forms::Padding(4);
         this->tol->Name = L"tol";
-        this->tol->Size = System::Drawing::Size(132, 22);
+        this->tol->Size = System::Drawing::Size(175, 22);
         this->tol->TabIndex = 4;
         // 
         // em
         // 
         this->em->AutoSize = true;
-        this->em->Location = System::Drawing::Point(16, 57);
+        this->em->BackColor = System::Drawing::Color::Bisque;
+        this->em->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.2F, System::Drawing::FontStyle::Bold));
+        this->em->ForeColor = System::Drawing::Color::Gray;
+        this->em->Location = System::Drawing::Point(41, 65);
         this->em->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
         this->em->Name = L"em";
-        this->em->Size = System::Drawing::Size(71, 16);
+        this->em->Size = System::Drawing::Size(192, 28);
         this->em->TabIndex = 5;
-        this->em->Text = L"Exponente";
+        this->em->Text = L"Exponente mayor";
         this->em->Click += gcnew System::EventHandler(this, &Form1::label1_Click);
         // 
         // x1
         // 
         this->x1->AutoSize = true;
-        this->x1->Location = System::Drawing::Point(217, 57);
+        this->x1->BackColor = System::Drawing::Color::Bisque;
+        this->x1->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.2F, System::Drawing::FontStyle::Bold));
+        this->x1->ForeColor = System::Drawing::Color::Gray;
+        this->x1->Location = System::Drawing::Point(311, 65);
         this->x1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
         this->x1->Name = L"x1";
-        this->x1->Size = System::Drawing::Size(16, 16);
+        this->x1->Size = System::Drawing::Size(150, 28);
         this->x1->TabIndex = 6;
-        this->x1->Text = L"xi";
-        
+        this->x1->Text = L"Primer Punto";
         // 
         // x2
         // 
         this->x2->AutoSize = true;
-        this->x2->Location = System::Drawing::Point(381, 57);
+        this->x2->BackColor = System::Drawing::Color::Bisque;
+        this->x2->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.2F, System::Drawing::FontStyle::Bold));
+        this->x2->ForeColor = System::Drawing::Color::Gray;
+        this->x2->Location = System::Drawing::Point(564, 65);
         this->x2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
         this->x2->Name = L"x2";
-        this->x2->Size = System::Drawing::Size(20, 16);
+        this->x2->Size = System::Drawing::Size(166, 28);
         this->x2->TabIndex = 7;
-        this->x2->Text = L"xu";
+        this->x2->Text = L"Segundo Punto";
         // 
         // me
         // 
         this->me->AutoSize = true;
-        this->me->Location = System::Drawing::Point(563, 57);
+        this->me->BackColor = System::Drawing::Color::Bisque;
+        this->me->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.2F, System::Drawing::FontStyle::Bold));
+        this->me->ForeColor = System::Drawing::Color::Gray;
+        this->me->Location = System::Drawing::Point(801, 65);
         this->me->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
         this->me->Name = L"me";
-        this->me->Size = System::Drawing::Size(21, 16);
+        this->me->Size = System::Drawing::Size(180, 28);
         this->me->TabIndex = 8;
-        this->me->Text = L"tol";
-             // 
+        this->me->Text = L"Margen de Error";
+        // 
         // ingresar
         // 
-        this->ingresar->Location = System::Drawing::Point(721, 78);
+        this->ingresar->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
+            static_cast<System::Int32>(static_cast<System::Byte>(192)));
+        this->ingresar->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.8F, System::Drawing::FontStyle::Bold));
+        this->ingresar->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(0)),
+            static_cast<System::Int32>(static_cast<System::Byte>(64)));
+        this->ingresar->Location = System::Drawing::Point(46, 154);
         this->ingresar->Margin = System::Windows::Forms::Padding(4);
         this->ingresar->Name = L"ingresar";
-        this->ingresar->Size = System::Drawing::Size(100, 28);
+        this->ingresar->Size = System::Drawing::Size(127, 43);
         this->ingresar->TabIndex = 9;
-        this->ingresar->Text = L"ingresar";
-        this->ingresar->UseVisualStyleBackColor = true;
+        this->ingresar->Text = L"Ingresar";
+        this->ingresar->UseVisualStyleBackColor = false;
         this->ingresar->Click += gcnew System::EventHandler(this, &Form1::Ingresar_Click);
         // 
         // Calcular
         // 
-        this->Calcular->Location = System::Drawing::Point(16, 236);
+        this->Calcular->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
+            static_cast<System::Int32>(static_cast<System::Byte>(192)));
+        this->Calcular->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.8F, System::Drawing::FontStyle::Bold));
+        this->Calcular->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(0)),
+            static_cast<System::Int32>(static_cast<System::Byte>(64)));
+        this->Calcular->Location = System::Drawing::Point(46, 409);
         this->Calcular->Margin = System::Windows::Forms::Padding(4);
         this->Calcular->Name = L"Calcular";
-        this->Calcular->Size = System::Drawing::Size(100, 28);
+        this->Calcular->Size = System::Drawing::Size(129, 47);
         this->Calcular->TabIndex = 10;
         this->Calcular->Text = L"Calcular";
-        this->Calcular->UseVisualStyleBackColor = true;
+        this->Calcular->UseVisualStyleBackColor = false;
         this->Calcular->Click += gcnew System::EventHandler(this, &Form1::Calcular_Click);
         // 
         // DatosTabla
         // 
+        this->DatosTabla->BackgroundColor = System::Drawing::Color::Bisque;
         this->DatosTabla->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-        this->DatosTabla->Location = System::Drawing::Point(16, 272);
+        this->DatosTabla->Location = System::Drawing::Point(46, 475);
         this->DatosTabla->Margin = System::Windows::Forms::Padding(4);
         this->DatosTabla->MaximumSize = System::Drawing::Size(1019, 288);
         this->DatosTabla->MinimumSize = System::Drawing::Size(1019, 288);
@@ -212,20 +249,61 @@ namespace CppCLRWinFormsProject {
         // 
         // Limpiar
         // 
-        this->Limpiar->Location = System::Drawing::Point(133, 236);
+        this->Limpiar->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
+            static_cast<System::Int32>(static_cast<System::Byte>(192)));
+        this->Limpiar->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.8F, System::Drawing::FontStyle::Bold));
+        this->Limpiar->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(0)),
+            static_cast<System::Int32>(static_cast<System::Byte>(64)));
+        this->Limpiar->Location = System::Drawing::Point(329, 409);
         this->Limpiar->Margin = System::Windows::Forms::Padding(4);
         this->Limpiar->Name = L"Limpiar";
-        this->Limpiar->Size = System::Drawing::Size(100, 28);
+        this->Limpiar->Size = System::Drawing::Size(132, 47);
         this->Limpiar->TabIndex = 12;
         this->Limpiar->Text = L"Limpiar";
-        this->Limpiar->UseVisualStyleBackColor = true;
+        this->Limpiar->UseVisualStyleBackColor = false;
         this->Limpiar->Click += gcnew System::EventHandler(this, &Form1::Limpiar_Click);
+        // 
+        // timer1
+        // 
+        this->timer1->Enabled = true;
+        this->timer1->Tick += gcnew System::EventHandler(this, &Form1::timer1_Tick_1);
+        // 
+        // ingreso
+        // 
+        this->ingreso->AutoSize = true;
+        this->ingreso->BackColor = System::Drawing::Color::Bisque;
+        this->ingreso->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 13.2F, System::Drawing::FontStyle::Bold));
+        this->ingreso->ForeColor = System::Drawing::Color::Gray;
+        this->ingreso->Location = System::Drawing::Point(41, 222);
+        this->ingreso->Name = L"ingreso";
+        this->ingreso->Size = System::Drawing::Size(245, 28);
+        this->ingreso->TabIndex = 15;
+        this->ingreso->Text = L"Ingreso de coeficientes";
+        this->ingreso->Click += gcnew System::EventHandler(this, &Form1::label1_Click_1);
+        // 
+        // Biseccion
+        // 
+        this->Biseccion->AutoSize = true;
+        this->Biseccion->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
+            static_cast<System::Int32>(static_cast<System::Byte>(192)));
+        this->Biseccion->Font = (gcnew System::Drawing::Font(L"Tempus Sans ITC", 16.2F, System::Drawing::FontStyle::Bold));
+        this->Biseccion->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(0)),
+            static_cast<System::Int32>(static_cast<System::Byte>(64)));
+        this->Biseccion->Location = System::Drawing::Point(420, 9);
+        this->Biseccion->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+        this->Biseccion->Name = L"Biseccion";
+        this->Biseccion->Size = System::Drawing::Size(281, 37);
+        this->Biseccion->TabIndex = 16;
+        this->Biseccion->Text = L"Metodo de Biseccion";
         // 
         // Form1
         // 
         this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
         this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-        this->ClientSize = System::Drawing::Size(1051, 575);
+        this->AutoValidate = System::Windows::Forms::AutoValidate::EnableAllowFocusChange;
+        this->ClientSize = System::Drawing::Size(1263, 846);
+        this->Controls->Add(this->Biseccion);
+        this->Controls->Add(this->ingreso);
         this->Controls->Add(this->Limpiar);
         this->Controls->Add(this->DatosTabla);
         this->Controls->Add(this->Calcular);
@@ -239,8 +317,11 @@ namespace CppCLRWinFormsProject {
         this->Controls->Add(this->xi);
         this->Controls->Add(this->exponente);
         this->Margin = System::Windows::Forms::Padding(4);
+        this->MaximizeBox = false;
         this->Name = L"Form1";
-        this->Text = L"Form1";
+        this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
+        this->Text = L"Calculadora";
+        this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
         (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->DatosTabla))->EndInit();
         this->ResumeLayout(false);
         this->PerformLayout();
@@ -266,7 +347,7 @@ private: System::Void Ingresar_Click(System::Object^ sender, System::EventArgs^ 
     int Exponente = Convert::ToInt32(exponente->Text);
     int Numero = 0;
     int x = 34;
-    int y = 162;
+    int y = 250;
     int ControlExponente = Exponente;
 
     try
@@ -335,7 +416,7 @@ private: System::Void Ingresar_Click(System::Object^ sender, System::EventArgs^ 
                else if (Label^ label = dynamic_cast<Label^>(control))
                {
                    // Excluir el Label específico de la eliminación
-                   if (label->Name != "em" && label->Name != "x1" && label->Name != "x2" && label->Name != "me" )
+                   if (label->Name != "em" && label->Name != "x1" && label->Name != "x2" && label->Name != "me" && label->Name != "Biseccion" && label->Name != "ingreso")
                    {
                        // Eliminar el Label y liberar los recursos
                        this->Controls->Remove(label);
@@ -560,6 +641,23 @@ private: System::Void Limpiar_Click(System::Object^ sender, System::EventArgs^ e
     DatosTabla->Columns->Clear();
     EliminarTextBoxYLabel();
 }
+//Fondo de la aplicacion
+
+private: System::Void timer1_Tick_1(System::Object^ sender, System::EventArgs^ e) {
+    Graphics^ g = this->CreateGraphics();
+    BufferedGraphicsContext^ Espacio = BufferedGraphicsManager::Current;
+    BufferedGraphics^ Buffer = Espacio->Allocate(g, this->ClientRectangle);
+    Buffer->Graphics->DrawImage(fondo, 0, 0, (int)Buffer->Graphics->VisibleClipBounds.Width, (int)Buffer->Graphics->VisibleClipBounds.Height);
+    Buffer->Render(g);
+    delete Buffer;
+    delete Espacio;
+    delete g;
+}
+private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+}
 };// end of class Form1
 } // end of namespace CppCLRWinFormsProject
-
+/// <summary>
+/// 
