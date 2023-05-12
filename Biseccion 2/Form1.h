@@ -51,17 +51,22 @@ namespace CppCLRWinFormsProject {
   private: System::Windows::Forms::TextBox^ xi;
   private: System::Windows::Forms::TextBox^ xu;
   private: System::Windows::Forms::TextBox^ tol;
+  private: System::Windows::Forms::Label^ em;
+  private: System::Windows::Forms::Label^ x1;
+  private: System::Windows::Forms::Label^ x2;
 
 
 
 
-  private: System::Windows::Forms::Label^ label1;
-  private: System::Windows::Forms::Label^ label2;
-  private: System::Windows::Forms::Label^ label3;
-  private: System::Windows::Forms::Label^ label4;
+
+
+
+  private: System::Windows::Forms::Label^ me;
+
   private: System::Windows::Forms::Button^ ingresar;
   private: System::Windows::Forms::Button^ Calcular;
   private: System::Windows::Forms::DataGridView^ DatosTabla;
+  private: System::Windows::Forms::Button^ Limpiar;
 
 
 
@@ -86,86 +91,97 @@ namespace CppCLRWinFormsProject {
         this->xi = (gcnew System::Windows::Forms::TextBox());
         this->xu = (gcnew System::Windows::Forms::TextBox());
         this->tol = (gcnew System::Windows::Forms::TextBox());
-        this->label1 = (gcnew System::Windows::Forms::Label());
-        this->label2 = (gcnew System::Windows::Forms::Label());
-        this->label3 = (gcnew System::Windows::Forms::Label());
-        this->label4 = (gcnew System::Windows::Forms::Label());
+        this->em = (gcnew System::Windows::Forms::Label());
+        this->x1 = (gcnew System::Windows::Forms::Label());
+        this->x2 = (gcnew System::Windows::Forms::Label());
+        this->me = (gcnew System::Windows::Forms::Label());
         this->ingresar = (gcnew System::Windows::Forms::Button());
         this->Calcular = (gcnew System::Windows::Forms::Button());
         this->DatosTabla = (gcnew System::Windows::Forms::DataGridView());
+        this->Limpiar = (gcnew System::Windows::Forms::Button());
         (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->DatosTabla))->BeginInit();
         this->SuspendLayout();
         // 
         // exponente
         // 
-        this->exponente->Location = System::Drawing::Point(12, 66);
+        this->exponente->Location = System::Drawing::Point(16, 81);
+        this->exponente->Margin = System::Windows::Forms::Padding(4);
         this->exponente->Name = L"exponente";
-        this->exponente->Size = System::Drawing::Size(100, 20);
+        this->exponente->Size = System::Drawing::Size(132, 22);
         this->exponente->TabIndex = 1;
         // 
         // xi
         // 
-        this->xi->Location = System::Drawing::Point(149, 66);
+        this->xi->Location = System::Drawing::Point(199, 81);
+        this->xi->Margin = System::Windows::Forms::Padding(4);
         this->xi->Name = L"xi";
-        this->xi->Size = System::Drawing::Size(100, 20);
+        this->xi->Size = System::Drawing::Size(132, 22);
         this->xi->TabIndex = 2;
         // 
         // xu
         // 
-        this->xu->Location = System::Drawing::Point(278, 66);
+        this->xu->Location = System::Drawing::Point(371, 81);
+        this->xu->Margin = System::Windows::Forms::Padding(4);
         this->xu->Name = L"xu";
-        this->xu->Size = System::Drawing::Size(100, 20);
+        this->xu->Size = System::Drawing::Size(132, 22);
         this->xu->TabIndex = 3;
         // 
         // tol
         // 
-        this->tol->Location = System::Drawing::Point(405, 66);
+        this->tol->Location = System::Drawing::Point(540, 81);
+        this->tol->Margin = System::Windows::Forms::Padding(4);
         this->tol->Name = L"tol";
-        this->tol->Size = System::Drawing::Size(100, 20);
+        this->tol->Size = System::Drawing::Size(132, 22);
         this->tol->TabIndex = 4;
         // 
-        // label1
+        // em
         // 
-        this->label1->AutoSize = true;
-        this->label1->Location = System::Drawing::Point(12, 46);
-        this->label1->Name = L"label1";
-        this->label1->Size = System::Drawing::Size(58, 13);
-        this->label1->TabIndex = 5;
-        this->label1->Text = L"Exponente";
-        this->label1->Click += gcnew System::EventHandler(this, &Form1::label1_Click);
+        this->em->AutoSize = true;
+        this->em->Location = System::Drawing::Point(16, 57);
+        this->em->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+        this->em->Name = L"em";
+        this->em->Size = System::Drawing::Size(71, 16);
+        this->em->TabIndex = 5;
+        this->em->Text = L"Exponente";
+        this->em->Click += gcnew System::EventHandler(this, &Form1::label1_Click);
         // 
-        // label2
+        // x1
         // 
-        this->label2->AutoSize = true;
-        this->label2->Location = System::Drawing::Point(163, 46);
-        this->label2->Name = L"label2";
-        this->label2->Size = System::Drawing::Size(14, 13);
-        this->label2->TabIndex = 6;
-        this->label2->Text = L"xi";
+        this->x1->AutoSize = true;
+        this->x1->Location = System::Drawing::Point(217, 57);
+        this->x1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+        this->x1->Name = L"x1";
+        this->x1->Size = System::Drawing::Size(16, 16);
+        this->x1->TabIndex = 6;
+        this->x1->Text = L"xi";
+        
         // 
-        // label3
+        // x2
         // 
-        this->label3->AutoSize = true;
-        this->label3->Location = System::Drawing::Point(286, 46);
-        this->label3->Name = L"label3";
-        this->label3->Size = System::Drawing::Size(18, 13);
-        this->label3->TabIndex = 7;
-        this->label3->Text = L"xu";
+        this->x2->AutoSize = true;
+        this->x2->Location = System::Drawing::Point(381, 57);
+        this->x2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+        this->x2->Name = L"x2";
+        this->x2->Size = System::Drawing::Size(20, 16);
+        this->x2->TabIndex = 7;
+        this->x2->Text = L"xu";
         // 
-        // label4
+        // me
         // 
-        this->label4->AutoSize = true;
-        this->label4->Location = System::Drawing::Point(422, 46);
-        this->label4->Name = L"label4";
-        this->label4->Size = System::Drawing::Size(18, 13);
-        this->label4->TabIndex = 8;
-        this->label4->Text = L"tol";
-        // 
+        this->me->AutoSize = true;
+        this->me->Location = System::Drawing::Point(563, 57);
+        this->me->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+        this->me->Name = L"me";
+        this->me->Size = System::Drawing::Size(21, 16);
+        this->me->TabIndex = 8;
+        this->me->Text = L"tol";
+             // 
         // ingresar
         // 
-        this->ingresar->Location = System::Drawing::Point(541, 63);
+        this->ingresar->Location = System::Drawing::Point(721, 78);
+        this->ingresar->Margin = System::Windows::Forms::Padding(4);
         this->ingresar->Name = L"ingresar";
-        this->ingresar->Size = System::Drawing::Size(75, 23);
+        this->ingresar->Size = System::Drawing::Size(100, 28);
         this->ingresar->TabIndex = 9;
         this->ingresar->Text = L"ingresar";
         this->ingresar->UseVisualStyleBackColor = true;
@@ -173,9 +189,10 @@ namespace CppCLRWinFormsProject {
         // 
         // Calcular
         // 
-        this->Calcular->Location = System::Drawing::Point(12, 192);
+        this->Calcular->Location = System::Drawing::Point(16, 236);
+        this->Calcular->Margin = System::Windows::Forms::Padding(4);
         this->Calcular->Name = L"Calcular";
-        this->Calcular->Size = System::Drawing::Size(75, 23);
+        this->Calcular->Size = System::Drawing::Size(100, 28);
         this->Calcular->TabIndex = 10;
         this->Calcular->Text = L"Calcular";
         this->Calcular->UseVisualStyleBackColor = true;
@@ -184,29 +201,44 @@ namespace CppCLRWinFormsProject {
         // DatosTabla
         // 
         this->DatosTabla->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-        this->DatosTabla->Location = System::Drawing::Point(12, 221);
-        this->DatosTabla->MaximumSize = System::Drawing::Size(764, 234);
-        this->DatosTabla->MinimumSize = System::Drawing::Size(764, 234);
+        this->DatosTabla->Location = System::Drawing::Point(16, 272);
+        this->DatosTabla->Margin = System::Windows::Forms::Padding(4);
+        this->DatosTabla->MaximumSize = System::Drawing::Size(1019, 288);
+        this->DatosTabla->MinimumSize = System::Drawing::Size(1019, 288);
         this->DatosTabla->Name = L"DatosTabla";
-        this->DatosTabla->Size = System::Drawing::Size(764, 234);
+        this->DatosTabla->RowHeadersWidth = 51;
+        this->DatosTabla->Size = System::Drawing::Size(1019, 288);
         this->DatosTabla->TabIndex = 11;
+        // 
+        // Limpiar
+        // 
+        this->Limpiar->Location = System::Drawing::Point(133, 236);
+        this->Limpiar->Margin = System::Windows::Forms::Padding(4);
+        this->Limpiar->Name = L"Limpiar";
+        this->Limpiar->Size = System::Drawing::Size(100, 28);
+        this->Limpiar->TabIndex = 12;
+        this->Limpiar->Text = L"Limpiar";
+        this->Limpiar->UseVisualStyleBackColor = true;
+        this->Limpiar->Click += gcnew System::EventHandler(this, &Form1::Limpiar_Click);
         // 
         // Form1
         // 
-        this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+        this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
         this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-        this->ClientSize = System::Drawing::Size(788, 467);
+        this->ClientSize = System::Drawing::Size(1051, 575);
+        this->Controls->Add(this->Limpiar);
         this->Controls->Add(this->DatosTabla);
         this->Controls->Add(this->Calcular);
         this->Controls->Add(this->ingresar);
-        this->Controls->Add(this->label4);
-        this->Controls->Add(this->label3);
-        this->Controls->Add(this->label2);
-        this->Controls->Add(this->label1);
+        this->Controls->Add(this->me);
+        this->Controls->Add(this->x2);
+        this->Controls->Add(this->x1);
+        this->Controls->Add(this->em);
         this->Controls->Add(this->tol);
         this->Controls->Add(this->xu);
         this->Controls->Add(this->xi);
         this->Controls->Add(this->exponente);
+        this->Margin = System::Windows::Forms::Padding(4);
         this->Name = L"Form1";
         this->Text = L"Form1";
         (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->DatosTabla))->EndInit();
@@ -278,11 +310,40 @@ private: System::Void Ingresar_Click(System::Object^ sender, System::EventArgs^ 
         MessageBox::Show("Se produjo un error: " + ex->Message, "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
     }
     
+//metodo para eliminar label 
+
 
 } // final del evento para generar los botones
 
 //Evento para hacer el metodo
-
+       void EliminarTextBoxYLabel()
+       {
+           // Iterar sobre los controles del formulario
+           for each (Control ^ control in this->Controls)
+           {
+               // Verificar si el control es un TextBox o un Label
+               if (TextBox^ textBox = dynamic_cast<TextBox^>(control))
+               {
+                   // Verificar si el TextBox debe ser excluido de la eliminación
+                   if (textBox->Name != "exponente" && textBox->Name != "xi" && textBox->Name != "xu" && textBox->Name != "tol")
+                   {
+                       // Eliminar el TextBox y liberar los recursos
+                       this->Controls->Remove(textBox);
+                       delete textBox;
+                   }
+               }
+               else if (Label^ label = dynamic_cast<Label^>(control))
+               {
+                   // Excluir el Label específico de la eliminación
+                   if (label->Name != "em" && label->Name != "x1" && label->Name != "x2" && label->Name != "me" )
+                   {
+                       // Eliminar el Label y liberar los recursos
+                       this->Controls->Remove(label);
+                       delete label;
+                   }
+               }
+           }
+       }
 Double CalcularFxi(Double Xi, Double exponente, array<Double>^ ValorCoeficientes) {
     Double Fxi = 0.0;
     Double Coeficiente = 0.0;
@@ -488,6 +549,17 @@ private: System::Void Calcular_Click(System::Object^ sender, System::EventArgs^ 
     
 
 }// fin del evento
+
+
+private: System::Void Limpiar_Click(System::Object^ sender, System::EventArgs^ e) {
+    exponente->Text = "";
+    xi->Text = "";
+    xu->Text = "";
+    tol->Text = "";
+    DatosTabla->Rows->Clear();
+    DatosTabla->Columns->Clear();
+    EliminarTextBoxYLabel();
+}
 };// end of class Form1
 } // end of namespace CppCLRWinFormsProject
 
