@@ -417,59 +417,68 @@ private: System::Void Calcular_Click(System::Object^ sender, System::EventArgs^ 
 
         do {
             //---------------------------------------------------------------------------------------------------
-            DatosTabla->Rows->Add();
-            DatosTabla->Rows[fila]->Cells[0]->Value = iteracion;
-            DatosTabla->Rows[fila]->Cells[1]->Value = XI;
-            DatosTabla->Rows[fila]->Cells[2]->Value = XU;
+            
             //Funcion que calcula F(xi)
             Double FXI = CalcularFxi(XI, Exponente, ValorCoeficientes);
-            DatosTabla->Rows[fila]->Cells[4]->Value = FXI;
             //Funcoin que calcula F(xu)
             Double FXU = CalcularFxu(XU, Exponente, ValorCoeficientes);
-            DatosTabla->Rows[fila]->Cells[5]->Value = FXU;
-            // Calculamos Xr
-            Double XR = CalcularXr(XI, XU);
-            DatosTabla->Rows[fila]->Cells[3]->Value = XR;
-            //Calculamos Fxr
-            Double FXR = CalcularFxr(XR, Exponente, ValorCoeficientes);
-            DatosTabla->Rows[fila]->Cells[6]->Value = FXR;
-            //calcular el error
+            if (FXI*FXU<0)
+            {  
+                DatosTabla->Rows->Add();
 
-            if (iteracion > 1) {
-                Error = Errores(XR, XRA);
-            }
-            else
-            {
-                Error = Errores(XR, XU);
-            };
+                DatosTabla->Rows[fila]->Cells[0]->Value = iteracion;
+                DatosTabla->Rows[fila]->Cells[1]->Value = XI;
+                DatosTabla->Rows[fila]->Cells[2]->Value = XU;
+                DatosTabla->Rows[fila]->Cells[4]->Value = FXI;
+                DatosTabla->Rows[fila]->Cells[5]->Value = FXU;
+                // Calculamos Xr
+                Double XR = CalcularXr(XI, XU);
+                DatosTabla->Rows[fila]->Cells[3]->Value = XR;
+                //Calculamos Fxr
+                Double FXR = CalcularFxr(XR, Exponente, ValorCoeficientes);
+                DatosTabla->Rows[fila]->Cells[6]->Value = FXR;
+                //calcular el error
 
-
-            if (FXI * FXR > 0) {
-                XI = XR;
-                DatosTabla->Rows[fila]->Cells[7]->Value = Error + "%";
-            }
-            else
-            {
-                if (FXI * FXR == 0)
-                {
-                    Error = Tolerancia;
-                    DatosTabla->Rows[fila]->Cells[7]->Value = "Raiz";
+                if (iteracion > 1) {
+                    Error = Errores(XR, XRA);
                 }
                 else
                 {
-                    XU = XR;
+                    Error = Errores(XR, XU);
+                };
+
+
+                if (FXI * FXR > 0) {
+                    XI = XR;
                     DatosTabla->Rows[fila]->Cells[7]->Value = Error + "%";
                 }
+                else
+                {
+                    if (FXI * FXR == 0)
+                    {
+                        Error = Tolerancia;
+                        DatosTabla->Rows[fila]->Cells[7]->Value = "Raiz";
+                    }
+                    else
+                    {
+                        XU = XR;
+                        DatosTabla->Rows[fila]->Cells[7]->Value = Error + "%";
+                    }
+
+                }
+                //Guardamos el valor de XR para que sea el anterior
+                XRA = XR;
+                b = b + 1;
+                iteracion = iteracion + 1;
+                fila = fila + 1;
 
             }
-            //Guardamos el valor de XR para que sea el anterior
-            XRA = XR;
-
-
-
-            b = b + 1;
-            iteracion = iteracion + 1;
-            fila = fila + 1;
+            else
+            {
+                Error = Tolerancia;
+                MessageBox::Show("No se encuentr raiz en esos dos puntos.");
+            }
+            
         } while (Error > Tolerancia);
     }
     catch (Exception^ ex)
@@ -479,14 +488,6 @@ private: System::Void Calcular_Click(System::Object^ sender, System::EventArgs^ 
     
 
 }// fin del evento
-
-
-
-
-
-
-
-
 };// end of class Form1
 } // end of namespace CppCLRWinFormsProject
 
